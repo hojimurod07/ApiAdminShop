@@ -8,7 +8,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //nimadir
 var app = builder.Build();
-
+//hojimurod
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
