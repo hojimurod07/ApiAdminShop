@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using System;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,6 +12,11 @@ builder.Services.AddSwaggerGen();
 //nimadir
 var app = builder.Build();
 //hojimurod
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("LocalDb"));
+    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+});
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
