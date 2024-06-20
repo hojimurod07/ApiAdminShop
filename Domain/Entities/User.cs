@@ -13,6 +13,7 @@ public class User : BaseEntity
     public Gender Gender { get; set; }
     public Role Role { get; set; } = Role.User;
     public string Adress { get; set; } = string.Empty;
+    public bool isVerified {  get; set; } = false;
     public string Salt { get; set; } = string.Empty;
     public List<Order> Orders { get; set; } = new List<Order>();
 }
