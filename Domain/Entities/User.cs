@@ -1,4 +1,5 @@
 ﻿using Data.Entities;
+using Domain.Enums;
 using System.Data;
 using System.Reflection;
 
