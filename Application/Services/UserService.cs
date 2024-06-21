@@ -1,18 +1,25 @@
 ﻿using Application.Common.DTOs.UserDtos;
 using Application.Common.Exceptions;
+using Application.Common.Extentions;
+using Application.Common.Utils;
 using Application.Interfaces;
 using AutoMapper;
 using Data.Interfaces;
 using Data.Repositories;
 using Domain.Entities;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System.Linq.Expressions;
 using System.Net;
 
 namespace Application.Services
 {
-    public class UserService(IUnitOfWork unitOf,IMapper _mapper) : IUserService
+    public class UserService(IUnitOfWork unitOf,IMapper mapper,IHttpContextAccessor accessor) : IUserService
     {
         private readonly IUnitOfWork _unitOf = unitOf;
-        private readonly IMapper mapper = _mapper;
+        private readonly IMapper _mapper = mapper;
+        private readonly IHttpContextAccessor _accessor = accessor;
+
 
         public async Task DeleteAsync(int id)
         {
@@ -23,16 +30,15 @@ namespace Application.Services
             throw new StatusCodeException(HttpStatusCode.OK, "User has been deleted sucessfully");
         }
 
-        public Task<List<UserDto>> GetAllAsync()
+     
+
+        public async Task<List<UserDto>> GetAllAsync(PaginationParams @params)
         {
-            throw new NotImplementedException();
+            var users = await _unitOf.User.GetAllAsync().ToPagedListAsync(@params);
+            return users.Select(x=>_mapper.Map<UserDto>(x)).ToList();
         }
 
-        //public async Task<List<UserDto>> GetAllAsync()
-        //{
-        //    var users = await _unitOf.User.GetAllAsync();
-        //    return users.Select(x => (UserDto)x).ToList();
-        //}
+
 
         public async Task<UserDto> GetByIdAsync(int id)
         {
