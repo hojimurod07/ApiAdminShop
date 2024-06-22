@@ -9,7 +9,6 @@ public class OrderRepository(AppDbContext dbContext) : GenericRepository<Order>(
 {
     private readonly AppDbContext _dbContext = dbContext;
 
-
     public async Task<List<Order>> GetAllOrdersAsync()
     {
         var orders =  await _dbContext.Orders.ToListAsync();

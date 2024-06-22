@@ -5,7 +5,7 @@ namespace Domain.Entities;
 
 public class Order : BaseEntity
 {
-    public DateTime OrderDate { get; set; } = DateTime.UtcNow;
+    public DateOnly OrderDate { get; set; }
     public Status Status { get; set; } = Status.todo;
     public int UserId { get; set; }
     public User? User { get; set; }
