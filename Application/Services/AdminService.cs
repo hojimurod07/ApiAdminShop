@@ -11,10 +11,10 @@ using System.Net;
 
 namespace Application.Services
 {
-    public class AdminService(IUnitOfWork unitOf, IValidator<User> validator) : IAdminService
+    public class AdminService(IUnitOfWork unitOf) : IAdminService
     {
         private readonly IUnitOfWork _unitOf = unitOf;
-        private readonly IValidator<User> _validator = validator;
+      
 
         public async Task ChangeUserRoleAsync(int id)
         {
