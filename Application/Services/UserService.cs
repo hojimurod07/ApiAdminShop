@@ -14,11 +14,11 @@ using System.Net;
 
 namespace Application.Services
 {
-    public class UserService(IUnitOfWork unitOf,IMapper mapper,IHttpContextAccessor accessor) : IUserService
+    public class UserService(IUnitOfWork unitOf,IMapper mapper) : IUserService
     {
         private readonly IUnitOfWork _unitOf = unitOf;
         private readonly IMapper _mapper = mapper;
-        private readonly IHttpContextAccessor _accessor = accessor;
+
 
 
         public async Task DeleteAsync(int id)
