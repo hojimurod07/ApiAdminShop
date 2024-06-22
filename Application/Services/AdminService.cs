@@ -1,9 +1,12 @@
 ﻿using Application.Common.Exceptions;
+using Application.Common.Extentions;
+using Application.Common.Utils;
 using Application.Interfaces;
 using Data.Interfaces;
 using Domain.Entities;
 using Domain.Enums;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace Application.Services
@@ -36,16 +39,16 @@ namespace Application.Services
             await _unitOf.User.DeleteAsync(user);
         }
 
-        public Task<List<User>> GetAllAdminAsync()
+  
+
+        public async Task<List<User>> GetAllAdminAsync(PaginationParams @params)
         {
-            throw new NotImplementedException();
+            var users = await _unitOf.User.GetAllAsync().ToPagedListAsync(@params);
+            var admins =  users.Where(p=>p.Role==Role.Admin).ToList();
+            return admins;
+            
         }
 
-        //public async Task<List<User>> GetAllAdminAsync()
-        //{
-        //    var users = _unitOf.User.GetAllAsync();
-        //    return users.Where(p => p.Role == Role.Admin);
-        //}
-
+       
     }
 }

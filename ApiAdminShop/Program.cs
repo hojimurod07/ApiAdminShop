@@ -2,13 +2,21 @@ using Data.DbContexts;
 using Data.Interfaces;
 using Data.Repositories;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container. 
+
 builder.Services.AddControllers();
 
-// CORRECT PLACEMENT - Register DbContext BEFORE building the app
+builder.Services.Configure<ConfigurationOptions>(
+                builder.Configuration.GetSection("RedisCacheOptions"));
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("RedisCacheConnectionString");
+    options.InstanceName = "UsersAPI";
+});
+
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("LocalDb"));
@@ -16,11 +24,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 builder.Services.AddTransient<IUnitOfWork,UnitOfWork>();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Build the application AFTER registering services
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

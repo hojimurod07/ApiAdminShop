@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Common.Utils;
+using Domain.Entities;
 
 namespace Application.Interfaces
 {
@@ -6,6 +7,6 @@ namespace Application.Interfaces
     {
         Task ChangeUserRoleAsync(int id);
         Task DeleteUserAsync(int id);
-        Task<List<User>> GetAllAdminAsync();
+        Task<List<User>> GetAllAdminAsync(PaginationParams @params);
     }
 }
