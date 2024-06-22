@@ -6,6 +6,8 @@ namespace Application.Services
 {
     public class ReportService(IUnitOfWork unitOfWork): IReportService
     {
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+
         public Task<ReportResult> GetAnnualReportAsync(AnnualReport annualReport)
         {
             throw new NotImplementedException();
