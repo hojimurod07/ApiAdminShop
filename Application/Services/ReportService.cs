@@ -8,9 +8,9 @@ namespace Application.Services
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-        public Task<ReportResult> GetAnnualReportAsync(AnnualReport annualReport)
+        public async Task<ReportResult> GetAnnualReportAsync(AnnualReport annualReport)
         {
-            throw new NotImplementedException();
+            var orders  =await _unitOfWork.Order.GetAllAsync();
         }
 
         public Task<ReportResult> GetDailyReportAsync(DailyReport annualReport)
