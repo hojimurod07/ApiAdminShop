@@ -10,6 +10,6 @@ namespace Application.Interfaces
         Task<OrderDto> GetByIdAsync(int id);
         Task CreateAsync(AddOrderDto dto);
         Task DeleteAsync(int id);
-        Task UpdateAsync(OrderDto productDto);
+        Task UpdateAsync(OrderDto orderDto);
     }
 }

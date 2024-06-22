@@ -1,9 +1,13 @@
 ﻿using Application.Common.DTOs.ProductDtos;
+using Application.Common.Exceptions;
+using Application.Common.Extentions;
+using Application.Common.Helpers;
 using Application.Common.Utils;
 using Application.Interfaces;
 using AutoMapper;
 using Data.Interfaces;
 using Domain.Entities;
+using System.Net;
 
 namespace Application.Services
 {
@@ -14,28 +18,45 @@ namespace Application.Services
 
         public async Task CreateAsync(AddProductDto productDto)
         {
-            var employee = _mapper.Map<Product>(productDto);
-            await _unitOfWork.Product.CreateAsync(employee);
+            var product = _mapper.Map<Product>(productDto);
+            await _unitOfWork.Product.CreateAsync(product);
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var product = await _unitOfWork.Product.GetByIdAsync(id);
+            if (product == null)
+            {
+                throw new StatusCodeException(HttpStatusCode.NotFound,"Product not found");
+            }
+            await _unitOfWork.Product.DeleteAsync(product);
         }
 
-        public Task<List<ProductDto>> GetAllAsync(PaginationParams @params)
+        public async Task<List<ProductDto>> GetAllAsync(PaginationParams @params)
         {
-            throw new NotImplementedException();
+            var products = await _unitOfWork.Product.GetAllAsync().ToPagedListAsync(@params);
+            return products.Select(p=>_mapper.Map<ProductDto>(p)).ToList();
         }
 
-        public Task<ProductDto> GetByIdAsync(int id)
+        public async Task<ProductDto> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var produc = await _unitOfWork.Product.GetByIdAsync(id);
+            if (produc is null)
+                throw new StatusCodeException(HttpStatusCode.NotFound, "Product not found");
+            return _mapper.Map<ProductDto>(produc);
         }
 
-        public Task UpdateAsync(ProductDto productDto)
+        public async Task UpdateAsync(ProductDto productDto)
         {
-            throw new NotImplementedException();
+            var product = await _unitOfWork.Product.GetByIdAsync(productDto.Id);
+            if (product is null)
+                throw new StatusCodeException(HttpStatusCode.NotFound, "Product Not Found");
+            product.Status = product.Status;
+            product.Quantity = productDto.Quantity;
+            product.Price = productDto.Price;
+            product.Description = productDto.Description;
+            product.Name = productDto.Name;
+            await _unitOfWork.Product.UpdateAsync(product);
         }
     }
 }
