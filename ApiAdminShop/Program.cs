@@ -1,3 +1,5 @@
+using Application.Interfaces;
+using Application.Services;
 using Data.DbContexts;
 using Data.Interfaces;
 using Data.Repositories;
@@ -23,7 +25,15 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 builder.Services.AddTransient<IUnitOfWork,UnitOfWork>();
-
+builder.Services.AddTransient<IAccountService,AccountService>();
+builder.Services.AddTransient<IAdminService,AdminService>();
+builder.Services.AddTransient<IAuthManager,AuthManager>();
+builder.Services.AddTransient<ICategoryService,CategoryService>();  
+builder.Services.AddTransient<IEmailService,EmailService>();
+builder.Services.AddTransient<IOrderDetailsService,OrderDetailService>();
+builder.Services.AddTransient<IOrdersService,OrdersService>();
+builder.Services.AddTransient<IProductService,ProductService>();
+builder.Services.AddTransient<IUserService,UserService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
