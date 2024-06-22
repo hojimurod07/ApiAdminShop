@@ -2,7 +2,7 @@
 {
     public class MonthlyReport
     {
-        public DateOnly StartDate { get; set; }
-        public DateOnly EndDate { get; set; }
+        public DateOnly Monthly { get; set; }
+        
     }
 }
