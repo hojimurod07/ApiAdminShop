@@ -1,4 +1,5 @@
 ﻿using Application.Common.DTOs.UserDtos;
+using Application.Common.Utils;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -21,9 +22,9 @@ namespace ApiAdminShop.Controllers
 
         [HttpGet("users")]
         [Authorize(Roles = "Admin, SuperAdmin")]
-        public async Task<IActionResult> GetAllAsync()
+        public async Task<IActionResult> GetAllAsync([FromQuery] PaginationParams @params)
         {
-            return Ok(await _userService.GetAllAsync());
+            return Ok(await _userService.GetAllAsync(@params));
         }
 
         [HttpPut]
