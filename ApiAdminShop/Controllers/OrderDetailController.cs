@@ -1,4 +1,5 @@
-﻿using Application.Common.DTOs.OrderDtos;
+﻿using Application.Common.DTOs.OrderDetailDtos;
+using Application.Common.DTOs.OrderDtos;
 using Application.Common.DTOs.ProductDtos;
 using Application.Common.Utils;
 using Application.Interfaces;
@@ -10,12 +11,13 @@ namespace ApiAdminShop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderDetailController(IOrdersService service) : ControllerBase
+    public class OrderDetailController(IOrderDetailsService service) : ControllerBase
     {
-        private readonly IOrdersService _service = service;
+        private readonly IOrderDetailsService _service = service;
+
         [HttpPost]
         [Authorize(Roles = "Admin, SuperAdmin")]
-        public async Task<IActionResult> CreateAsync([FromForm] AddOrderDto dto)
+        public async Task<IActionResult> CreateAsync([FromForm] AddOrderDetailDto dto)
         {
             await _service.CreateAsync(dto);
             return Ok();
@@ -42,7 +44,7 @@ namespace ApiAdminShop.Controllers
 
         [HttpPut]
         [Authorize(Roles = "SuperAdmin, Admin")]
-        public async Task<IActionResult> UpdateAsync([FromForm] OrderDto dto)
+        public async Task<IActionResult> UpdateAsync([FromForm] OrderDetailDto dto)
         {
             await _service.UpdateAsync(dto);
             return Ok();
