@@ -54,6 +54,7 @@ namespace Application.Services
             orderDetail.Quantity = orderDetailDto.Quantity;
             orderDetail.OrderId = orderDetailDto.OrderId;
             orderDetail.Amount = orderDetailDto.Amount;
+            orderDetailDto.OrderId = orderDetailDto.OrderId;
             await _unitOfWork.OrderDetal.UpdateAsync(orderDetail);
         }
     }
