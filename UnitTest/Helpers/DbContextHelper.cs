@@ -1,12 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Data.DbContexts;
+using Data.Interfaces;
+using Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 
-namespace UnitTest.Helpers
+namespace UnitTest.Helpers;
+
+public static class DbContextHelper
 {
-    internal class DbContextHelper
-    {
-    }
+    private static readonly DbContextOptions<AppDbContext> options =
+        new DbContextOptionsBuilder<AppDbContext>()
+        .UseInMemoryDatabase(databaseName: "AdminShop")
+    .Options;
+
+    public static AppDbContext GetDbContext()
+        => new AppDbContext(options);
+
+    public static IUnitOfWork GetUnitOfWork()
+        => new UnitOfWork(GetDbContext());
 }
