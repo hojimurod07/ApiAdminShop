@@ -46,7 +46,5 @@ namespace ApiAdminShop.Controllers
             await _service.UpdateAsync(dto);
             return Ok();
         }
-
-
     }
 }

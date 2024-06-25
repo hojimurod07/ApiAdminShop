@@ -49,10 +49,12 @@ namespace Application.Services
         {
             var user = await _unitOf.User.GetByEmailAsync(login.Email);
 
-            if (user is null) throw new StatusCodeException(HttpStatusCode.NotFound, "User not found!");
+            if (user is null)
+                throw new StatusCodeException(HttpStatusCode.NotFound, "User not found!");
 
-            if (!user.Password.Equals(PasswordHasher.GetHash(login.Password)))
+            if (!PasswordHasher.IsEqual(user.Password, login.Password, user.Salt))
                 throw new StatusCodeException(HttpStatusCode.Conflict, "Password incorrect!");
+
             if (!user.isVerified)
                 throw new StatusCodeException(HttpStatusCode.BadRequest, "User is not verified!");
 
@@ -63,11 +65,12 @@ namespace Application.Services
         {
             var user = await _unitOf.User.GetByEmailAsync(dto.Email);
 
-            if (user is not null) throw new StatusCodeException(HttpStatusCode.AlreadyReported, "User already exists!");
+            if (user is not null)
+                throw new StatusCodeException(HttpStatusCode.Conflict, "User already exists!");
 
+            var entity = _mapper.Map<User>(dto);
 
-            var entity = _mapper.Map<User>(dto); 
-            entity.Password = PasswordHasher.GetHash(entity.Password);
+            entity.Password = PasswordHasher.GetHash(entity.Password, out var salt);
 
             await _unitOf.User.CreateAsync(entity);
 
