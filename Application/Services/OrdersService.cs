@@ -52,9 +52,9 @@ namespace Application.Services
             var order = await _unitOfWork.Order.GetByIdAsync(orderDto.Id);
             if (order is null)
                 throw new StatusCodeException(HttpStatusCode.NotFound, "Order Not Found");
-       
-            order.OrderDate = orderDto.OrderDate;
-          
+
+            order.OrderDate = DateOnly.FromDateTime(orderDto.OrderDate);
+
             await _unitOfWork.Order.UpdateAsync(order);
         }
     }

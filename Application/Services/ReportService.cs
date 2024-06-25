@@ -70,7 +70,7 @@ namespace Application.Services
             };
         }
 
-        public async Task<ReportResult> GetWeeeklReportAsync(RangeReport rangeReport )
+        public async Task<ReportResult> GetWeeeklReportAsync(RangeReport rangeReport)
         {
             var orders = await _unitOfWork.Order.GetAllOrdersAsync();
             var totalAmounts = orders

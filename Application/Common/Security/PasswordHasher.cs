@@ -1,27 +1,46 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace Application.Common.Security
+namespace Application.Common.Security;
+
+public class PasswordHasher
 {
-    public static class PasswordHasher
+    private static readonly string _key = "ba225412-d305-4667-84f6-e39b43d8a9ef";
+
+    public static string GetHash(string password, out string salt)
     {
-        public static string GetHash(this string password)
+        salt = GenerateSalt();
+
+        var pass = password + salt + _key;
+
+        return GeneratedHash(pass);
+    }
+
+    public static bool IsEqual(string registerPassword, string loginPassword, string salt)
+    {
+        var password = loginPassword + salt + _key;
+
+        return registerPassword == GeneratedHash(password);
+    }
+
+    private static string GeneratedHash(string password)
+    {
+        using (SHA256 sha256 = SHA256.Create())
         {
-            using (SHA256 sha256 = SHA256.Create())
+            byte[] bytes = Encoding.UTF8.GetBytes(password);
+
+            byte[] hash = sha256.ComputeHash(bytes);
+
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < hash.Length; i++)
             {
-                byte[] bytes = Encoding.UTF8.GetBytes(password);
-
-                byte[] hash = sha256.ComputeHash(bytes);
-
-                StringBuilder stringBuilder = new StringBuilder();
-                for (int i = 0; i < hash.Length; i++)
-                {
-                    stringBuilder.Append(hash[i].ToString("x2"));
-                }
-
-
-                return stringBuilder.ToString();
+                stringBuilder.Append(hash[i].ToString("x2"));
             }
+
+            return stringBuilder.ToString();
         }
     }
+
+    private static string GenerateSalt()
+        => Guid.NewGuid().ToString();
 }
